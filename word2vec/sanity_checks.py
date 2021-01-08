@@ -21,8 +21,14 @@ def test_num_tokens():
     ds = Dataset()
     assert ds.num_tokens() == 19538
     
-    
+def test_get_negative_samples():
+    ds = Dataset()
+    id2token = ds.id2token()
+    negative_sample_ids = ds.get_negative_samples(10)
+    for negative_sample_id in negative_sample_ids:
+        print(id2token[negative_sample_id])
     
 if __name__ == '__main__':
-    test_get_context()
-    test_num_tokens()
+    # test_get_context()
+    # test_num_tokens()
+    test_get_negative_samples()

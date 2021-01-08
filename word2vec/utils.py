@@ -6,6 +6,19 @@ Created on Mon Jan  4 13:24:36 2021
 """
 import numpy as np
 
+def sigmoid(x):
+    """
+    Compute the sigmoid function for the input here.
+    Arguments:
+    x -- A scalar or numpy array.
+    Return:
+    s -- sigmoid(x)
+    """
+
+    s = 1 / (1 + np.exp(-x))
+
+    return s
+
 def softmax(x):
     """Compute the softmax function for each row of the input x.
     It is crucial that this function is optimized for speed because

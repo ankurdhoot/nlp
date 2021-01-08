@@ -13,7 +13,7 @@ class Dataset:
     # TODO(ankur): Implement subsampling.
     
     def __init__(self):
-        # TODO(ankur): Fill this out
+        # TODO(ankur): Initialize all member variables to None
         self.dataset_path = "datasetSentences.txt"
         pass
     
@@ -70,6 +70,7 @@ class Dataset:
         # TODO(ankur): Do I need to do anything about unknown words?
         self._id2token = id2token
         self._token2id = token2id
+        self._tokenfreq = tokenfreq
         
         return self._token2id
     
@@ -110,6 +111,49 @@ class Dataset:
             return self.get_context()
         
         return center_word_id, context_word_ids
+    
+    def compute_sampling_distribution(self):
+        """
+        Returns the sampling distribution for each token.
+        """
+        if hasattr(self, "_probs") and self._probs:
+            return self._probs
+        
+        # TODO(ankur): Do the raise to the power of 3/4 magic.
+        
+        # Ensure the tokenfreq has been calculated.
+        self.tokens()
+        
+        # Python >= 3.6 guarantees insertion ordering.
+        probs = np.array(list(self._tokenfreq.values()))
+        
+        # Unigram distribution.
+        probs = probs / np.sum(probs)
+        
+        self._probs = probs
+        return self._probs
+    
+    def get_negative_samples(self, context_word_id, K=10):
+        """ 
+        Arguments:
+            context_word_id (int) -- the id of the context word
+            K (int) -- the number of negative samples to generate
+        
+        Returns:
+            negative_sample_ids (List[int]) -- the ids of the K negative sample words
+        """
+        self.compute_sampling_distribution()            
+        
+        rng = np.random.default_rng()
+        
+        negative_sample_ids = rng.choice(len(self._probs), size=K, replace=True, p=self._probs)
+        
+        # TODO(ankur): This is an inefficient way of making sure we don't includd the context_word.
+        while context_word_id in negative_sample_ids:
+            negative_sample_ids = rng.choice(len(self._probs), size=K, replace=True, p=self._probs)
+            
+        return negative_sample_ids
+        
         
         
         

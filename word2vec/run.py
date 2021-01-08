@@ -16,7 +16,7 @@ def run():
     ds = Dataset()
     word2vec = Word2Vec(ds, embedding_size=10)
     
-    word2vec.sgd(word2vec.skipgram_batch(), 40000)
+    word2vec.sgd(word2vec.skipgram_negative_batch(), 40000)
     
 
 
