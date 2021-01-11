@@ -15,11 +15,9 @@ from word2vec import Word2Vec
 def run():
     ds = Dataset()
     word2vec = Word2Vec(ds, embedding_size=10)
+    word2vec.sgd(40000, use_negative=True, use_saved=True)
+    # word2vec.gradcheck(word2vec.skipgram_negative)
     
-    word2vec.sgd(word2vec.skipgram_negative_batch(), 40000)
-    
-
-
     
 if __name__ == '__main__':
     run()

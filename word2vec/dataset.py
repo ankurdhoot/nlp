@@ -116,7 +116,7 @@ class Dataset:
         """
         Returns the sampling distribution for each token.
         """
-        if hasattr(self, "_probs") and self._probs:
+        if hasattr(self, "_probs") and self._probs is not None:
             return self._probs
         
         # TODO(ankur): Do the raise to the power of 3/4 magic.
