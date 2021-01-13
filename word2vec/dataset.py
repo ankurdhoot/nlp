@@ -80,6 +80,12 @@ class Dataset:
         assert hasattr(self, "_id2token") and self._id2token
         return self._id2token
     
+    def token2id(self):
+        # Compute the dicts if not already done.
+        self.tokens()
+        assert hasattr(self, "_token2id") and self._token2id
+        return self._token2id
+    
     def num_tokens(self):
         return len(self.tokens())
         

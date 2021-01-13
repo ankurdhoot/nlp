@@ -6,7 +6,7 @@ Created on Sun Jan  3 19:00:08 2021
 """
 
 import numpy as np
-from utils import softmax, sigmoid
+from utils import softmax, sigmoid, cosine_similarity
 import time
 import glob
 import os.path as op
@@ -528,6 +528,40 @@ class Word2Vec:
                     
         if gradient_check_successful:
             print("Gradient check passed!")
+            
+            
+    def k_nearest_words(self, word, k=3):
+        """
+        Arguments:
+            word (str): The word for which the closest word is requested.
+            k (int): The number of nearest words to find.
+
+        """
+        self.load_saved_params(use_negative=True)
+        
+        if not word in self.dataset.token2id():
+            return None
+        
+        word_id = self.dataset.token2id()[word]
+        
+        # (embedding_size, )
+        word_embedding = self.center_word_vectors[word_id]
+        
+        similarity = cosine_similarity(self.center_word_vectors, word_embedding)
+        
+        top_k_ind = np.argpartition(similarity, -k)[-k:]
+        
+        print(word)
+        
+        for word_idx in top_k_ind:
+            similar_word = self.dataset.id2token()[word_idx]
+            similarity_score = similarity[word_idx]
+            print("%s : %f" % (similar_word, similarity_score))
+            
+    def k_nearest_words_random(self, k=15):
+        random_word = self.dataset.id2token()[random.randint(0, len(self.dataset.id2token()))]
+        return self.k_nearest_words(random_word, k)
+        
                 
                 
                 

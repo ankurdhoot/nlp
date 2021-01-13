@@ -47,3 +47,27 @@ def softmax(x):
 
     assert x.shape == orig_shape
     return x
+
+def cosine_similarity(vocab_embeddings, word_embedding):
+    """ 
+    Returns the cosine similarity between the word_embedding and all
+    vocab_embeddings.
+    
+    Arguments:
+        vocab_embeddings (vocab_size, embedding_size) -- the vocab embeddings
+        word_embedding (embedding_size, ) -- the word embedding
+    """
+    
+    # (vocab_size, )
+    dot_product = np.dot(vocab_embeddings, word_embedding)
+    
+    # (vocab_size, )
+    vocab_embedding_norm = np.linalg.norm(vocab_embeddings, axis=1)
+    
+    # ()
+    word_embedding_norm = np.linalg.norm(word_embedding)
+    
+    # (vocab_size, )
+    cosine_similarity = dot_product / (vocab_embedding_norm * word_embedding_norm)
+    
+    return cosine_similarity

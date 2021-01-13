@@ -14,9 +14,10 @@ from word2vec import Word2Vec
 
 def run():
     ds = Dataset()
-    word2vec = Word2Vec(ds, embedding_size=10)
-    word2vec.sgd(40000, use_negative=True, use_saved=True)
+    word2vec = Word2Vec(ds, embedding_size=30)
+    word2vec.sgd(60000, use_negative=False, use_saved=False)
     # word2vec.gradcheck(word2vec.skipgram_negative)
+    # word2vec.k_nearest_words_random()
     
     
 if __name__ == '__main__':
